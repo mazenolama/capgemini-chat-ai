@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/dbe082d7-4256-4957-a5b3-c88d3cdf650f
+
 # Capgemini Chat AI
 
 A full-stack, Chat.ai-style AI chat application built as part of a technical assessment.  
