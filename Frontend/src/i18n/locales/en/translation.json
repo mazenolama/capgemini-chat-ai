@@ -1,0 +1,17 @@
+{
+  "common": { "or": "OR" },
+  "auth": {
+    "title": "AI-powered sentiment analysis, orchestrated from one dashboard.",
+    "subtitle": "Omnichannel agentic AI platform",
+    "email": "Email address",
+    "password": "Password",
+    "passwordPlaceholder": "Your password",
+    "remember": "Remember me",
+    "forgot": "Forgot password?",
+    "signIn": "Sign in",
+    "continueWith": "continue with",
+    "noAccount": "Not a member?",
+    "signUp": "Start a 14 day free trial",
+    "tenantSlug": "Organization"
+  }
+}
