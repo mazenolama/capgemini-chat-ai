@@ -28,7 +28,10 @@ Pull model if needed:
 ```bash
 ollama pull gemma2:2b
 ```
+May you have to run :
+ollama serve 
 
+in your cmd if you get 404 
 ---
 
 ## Setup Virtual Environment

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 export type Theme = 'light' | 'dark'
 
-const STORAGE_KEY = 'xshift-theme'
+const STORAGE_KEY = 'm.ai-theme'
 
 function getStoredTheme(): Theme | null {
   if (typeof window === 'undefined') return null
@@ -31,11 +31,9 @@ export function applyTheme(theme: Theme) {
   try {
     window.localStorage.setItem(STORAGE_KEY, theme)
   } catch {
-    // ignore
   }
 }
 
-/** Run once on app load so even login page respects saved theme */
 export function initThemeOnLoad() {
   const stored = getStoredTheme()
   const theme = stored ?? getSystemTheme()
@@ -44,7 +42,6 @@ export function initThemeOnLoad() {
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
-    // SSR-safe default
     if (typeof window === 'undefined') return 'dark'
     return getStoredTheme() ?? getSystemTheme()
   })

@@ -13,20 +13,16 @@ from pydantic import BaseModel, Field
 
 load_dotenv()
 
-# -----------------------------
 # Config
-# -----------------------------
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma2:2b")
 
-# You can set CHAT_BACKEND=ollama or dummy
 CHAT_BACKEND = os.getenv("CHAT_BACKEND", "ollama").lower()
 
-# Allow your frontend dev server(s)
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
 
 # -----------------------------
-# FastAPI app
+# FastAPI 
 # -----------------------------
 app = FastAPI(title="Streaming Chat Backend", version="1.0.0")
 
@@ -49,7 +45,6 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: List[ChatMessage] = Field(default_factory=list)
-    # Optional knobs you can pass from frontend
     temperature: Optional[float] = None
     top_p: Optional[float] = None
 
@@ -83,7 +78,6 @@ def messages_to_prompt(messages: List[ChatMessage]) -> str:
     if convo_block:
         convo_block += "\n"
 
-    # End with assistant cue
     return f"{system_block}{convo_block}Assistant:"
 
 # -----------------------------
@@ -104,7 +98,6 @@ async def stream_dummy(messages: List[ChatMessage]) -> AsyncGenerator[str, None]
         "- Streams as NDJSON chunks\n"
     )
 
-    # Stream token-ish chunks
     for token in answer.split(" "):
         yield to_ndjson({"delta": token + " "})
     yield to_ndjson({"done": True})
@@ -130,7 +123,6 @@ async def stream_ollama_generate(
         "stream": True,
     }
 
-    # Optional generation options
     options: Dict[str, Any] = {}
     if temperature is not None:
         options["temperature"] = temperature
@@ -143,7 +135,6 @@ async def stream_ollama_generate(
         try:
             async with client.stream("POST", url, json=payload) as r:
                 if r.status_code >= 400:
-                    # include body for debugging
                     body = await r.aread()
                     raise HTTPException(
                         status_code=502,
@@ -157,15 +148,12 @@ async def stream_ollama_generate(
                     try:
                         obj = json.loads(line)
                     except json.JSONDecodeError:
-                        # If something unexpected comes from upstream, skip
                         continue
 
-                    # token chunk
                     chunk = obj.get("response", "")
                     if chunk:
                         yield to_ndjson({"delta": chunk})
 
-                    # done
                     if obj.get("done") is True:
                         yield to_ndjson({"done": True})
                         break
@@ -195,7 +183,6 @@ async def chat_stream(req: ChatRequest):
             async for chunk in stream_dummy(req.messages):
                 yield chunk
         else:
-            # default: ollama
             async for chunk in stream_ollama_generate(req.messages, req.temperature, req.top_p):
                 yield chunk
 

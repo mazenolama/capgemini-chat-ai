@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Suspense } from 'react'
 
 import AppLayout from '@/layouts/AppLayout'
-import { useDirection } from '@/i18n/useDirection'
 // Pages
 import ChatShell from './pages/chat/ChatShell'
 import Settings from './pages/settings/Settings'
@@ -12,7 +11,6 @@ import { Toaster } from 'react-hot-toast'
 
 
 export default function App() {
-  useDirection()
 
   return (
     <BrowserRouter>

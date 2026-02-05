@@ -35,7 +35,6 @@ export async function streamChatCompletion(args: {
     if (done) break
     buffer += decoder.decode(value, { stream: true })
 
-    // NDJSON: one JSON object per line
     let idx
     while ((idx = buffer.indexOf('\n')) >= 0) {
       const line = buffer.slice(0, idx).trim()
