@@ -15,7 +15,7 @@ The focus of this implementation is on:
 The following demo shows the full user flow, including message input, real-time
 streaming responses, and Markdown rendering.
 
-https://github.com/mazenolama/capgemini-chat-ai/demo.mp4
+https://github.com/mazenolama/capgemini-chat-ai/raw/refs/heads/main/demo.mp4
 
 
 ## ✨ Key Features
